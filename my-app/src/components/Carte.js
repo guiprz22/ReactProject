@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 const Card = ({ cards }) => {
 const [currentNumber, setCurrentNumber] = useState(1)
+const [localStorage,setLocalStorage]=useState(window.localStorage.card)
 // const [currentButton,setCurrentButton]= useState("")
 const ColorMana = () => {
   let manaArray = [];
@@ -39,6 +40,7 @@ const ColorMana = () => {
         storedData.push(cards.id);
       }
       window.localStorage.card = storedData; 
+      setLocalStorage(storedData)
   };
   // const updateStorage=()=>{
     
@@ -58,18 +60,20 @@ const ColorMana = () => {
     let newData = storedData.filter((id) => id !== cards.id);
 
     window.localStorage.card = newData;
+    setLocalStorage(newData)
   };
   const inStorage =()=>{
-    if(window.localStorage.card){
-    return !window.localStorage.card.includes(cards.id.toString())
+    if(localStorage){
+    return !localStorage.includes(cards.id.toString())
     }else{
       return cards.id
     }
   };
-
+  
   
   const changeNumber = (newNumber) => {
     setCurrentNumber(newNumber)
+
   }
   const getNumberOfCardIndex=()=>{
     let count=0;
@@ -131,12 +135,12 @@ const ColorMana = () => {
  
       </ul>
     {inStorage() ? (
-        <div className="btn" onClick={() =>{addStorage();window.location.reload();}}>
+        <div className="btn" onClick={() =>addStorage()}>
           {/* {currentButton} */}
           Ajouter au deck
         </div>
       ) : (
-        <div className="btn" onClick={() =>{deleteStorage();window.location.reload();}}>
+        <div className="btn" onClick={() =>deleteStorage()}>
         {/* {currentButton} */}
         Supprimer du deck
       </div>
